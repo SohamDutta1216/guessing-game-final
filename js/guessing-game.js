@@ -41,8 +41,9 @@ class Game {
         }
         difference(){ return Math.abs(this.playersGuess - this.winningNumber);
         }
-        isLower(){
+        isLower(){   
         if (this.playersGuess < this.winningNumber){
+
             return true
         }
             return false
@@ -58,16 +59,23 @@ class Game {
         checkGuess(){
             let index = this.pastGuesses.indexOf(this.playersGuess);
             let feedback = '';
+            let hint = '';
+            if (this.isLower()){
+                hint = 'Guess Higher!';
+                
+            } else {
+                hint = 'Guess Lower!';
+            }
             if (index !== -1) {
                 feedback = 'You have already guessed that number.';
            }
            this.pastGuesses.push(this.playersGuess)
            if (this.winningNumber === this.playersGuess) {
             feedback = 'You Win!';
-            
-          }
+            } 
           else if (this.pastGuesses.length >= 5) {
-            feedback = `You lose! The winning number was ${this.winningNumber}` ; 
+            feedback = `You lose! The winning number was ${this.winningNumber}` ;
+            hint = 'Click reset to try again!' 
           }
          else if (this.difference() < 10) {
             feedback = "You're burning up!";
@@ -83,9 +91,11 @@ class Game {
           }
           document.querySelector('#title').innerHTML = feedback;
           document.querySelector(`#guess-list li:nth-child(${this.pastGuesses.length})`).innerHTML = this.playersGuess
-          
-          return feedback;
-        }
+          document.querySelector('#subtitle').innerHTML = hint;
+          return [feedback,hint]
+        } 
+        
+    
     
     }
 
